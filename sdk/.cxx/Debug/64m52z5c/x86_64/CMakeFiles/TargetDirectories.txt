@@ -1,0 +1,3 @@
+C:/Users/PICHAU/Downloads/docscanner/sdk/.cxx/Debug/64m52z5c/x86_64/CMakeFiles/opencv_jni_shared.dir
+C:/Users/PICHAU/Downloads/docscanner/sdk/.cxx/Debug/64m52z5c/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/PICHAU/Downloads/docscanner/sdk/.cxx/Debug/64m52z5c/x86_64/CMakeFiles/rebuild_cache.dir

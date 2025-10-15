@@ -1,0 +1,2 @@
+ninja: Entering directory `C:\Users\PICHAU\Downloads\docscanner\sdk\.cxx\Debug\64m52z5c\x86_64'
+ninja: no work to do.
