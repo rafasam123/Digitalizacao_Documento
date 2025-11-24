@@ -15,34 +15,32 @@ class CropView @JvmOverloads constructor(
     private val touchTolerance = 60f
     private val linePaint = Paint().apply { color = Color.GREEN; strokeWidth = 8f; style = Paint.Style.STROKE }
     private val pointPaint = Paint().apply { color = Color.GREEN; strokeWidth = 30f; style = Paint.Style.FILL }
-
+    
     private var imagePoints: Array<PointF>? = null
     private var draggingPointIndex: Int = -1
     private val pointMatrix = Matrix()
     private val inversePointMatrix = Matrix()
-
-    // O NOSSO NOVO "INTERRUPTOR"
     private var isEditable = true
 
-    // Função para ligar/desligar o modo de edição
     fun setEditable(editable: Boolean) {
         this.isEditable = editable
-        invalidate() // Pede para redesenhar (para remover ou mostrar as bordas)
+        invalidate()
     }
 
     fun setPoints(corners: Array<PointF>) {
         imagePoints = corners
-        setEditable(true) // Sempre que novos pontos são definidos, a edição é ativada
+        setEditable(true)
     }
 
     fun getPoints(): Array<PointF>? = imagePoints
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // SÓ DESENHA AS BORDAS SE ESTIVER NO MODO DE EDIÇÃO
-        if (!isEditable) return
+        if (!isEditable) return // Só desenha bordas se estiver editando
 
         val currentImagePoints = imagePoints ?: return
+        
+        // Mapeia coordenadas da imagem para a tela
         this.imageMatrix.invert(inversePointMatrix)
         pointMatrix.set(this.imageMatrix)
         val screenPoints = FloatArray(currentImagePoints.size * 2)
@@ -64,10 +62,11 @@ class CropView @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        // SÓ PERMITE ARRASTAR SE ESTIVER NO MODO DE EDIÇÃO
         if (!isEditable) return super.onTouchEvent(event)
 
         val currentImagePoints = imagePoints ?: return false
+        
+        // Mapeia toque da tela para coordenadas da imagem
         val touchPoint = floatArrayOf(event.x, event.y)
         inversePointMatrix.mapPoints(touchPoint)
         val imageTouchPoint = PointF(touchPoint[0], touchPoint[1])
@@ -88,13 +87,11 @@ class CropView @JvmOverloads constructor(
                     return true
                 }
             }
-            MotionEvent.ACTION_UP -> {
-                draggingPointIndex = -1
-            }
+            MotionEvent.ACTION_UP -> { draggingPointIndex = -1 }
         }
         return true
     }
-
+    
     private fun getDistance(p1: PointF, p2: PointF): Float {
         return sqrt((p1.x - p2.x).pow(2) + (p1.y - p2.y).pow(2))
     }
